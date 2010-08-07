@@ -106,8 +106,18 @@ function _crowd_qa_context_default_contexts() {
   $context->name = 'crowd_qa-feature-space';
   $context->description = '';
   $context->tag = 'Question & Answers';
-  $context->conditions = FALSE;
-  $context->reactions = FALSE;
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'crowd_qa_answer' => 'crowd_qa_answer',
+        'crowd_qa_question' => 'crowd_qa_question',
+      ),
+      'options' => array(
+        'node_form' => 1,
+      ),
+    ),
+  );
+  $context->reactions = array();
   $context->condition_mode = 0;
 
   $export['crowd_qa-feature-space'] = $context;
