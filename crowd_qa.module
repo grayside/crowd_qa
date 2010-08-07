@@ -1,0 +1,51 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ *   Module for Crowdsourced Question & Answer
+ */
+
+require_once 'crowd_qa.features.inc';
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function crowd_qa_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'crowd_qa_answer_node_form') {
+    // Do not show the nodereference field if it is already set.
+    if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
+      $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
+      $form['field_crowd_qa_question'][0]['#value'] = $form['field_crowd_qa_question'][0]['#default_value']['nid'];
+      $form['field_crowd_qa_question'][0]['#parents'] = array('field_crowd_qa_question', 0, 'nid');
+    }
+    $form['#submit'][] = 'crowd_qa_submit';
+  }
+}
+
+function crowd_qa_submit(&$form, &$form_state) {
+  dpm($form_state['values']);
+}
+
+/**
+ * Implementation of hook_preprocess_node_form().
+ * Provides Atrium-integration for Crowd QA
+ */
+function crowd_qa_preprocess_node_form(&$vars) {
+  if (module_exists('atrium') && !empty($vars['form']['field_crowd_qa_question'])) {
+    $vars['sidebar']['field_crowd_qa_question'] = $vars['form']['field_crowd_qa_question'];
+    unset($vars['form']['field_crowd_qa_question']);
+  }
+}
+
+
+/**
+ * Implementation of hook_system_info_alter().
+ * Provides Atrium-integration for Crowd QA
+ */
+function crowd_qa_system_info_alter(&$info, $row) {
+  if (module_exists('atrium') && $row->name == 'crowd_qa') {
+    $info['spaces']['types'][] = 'og';
+    $info['name'] = t('Question and Answers');
+  }
+}

@@ -1,0 +1,9 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_install().
+ */
+function crowd_qa_install() {
+  db_query("UPDATE {system} SET WEIGHT='11' WHERE name='crowd_qa'");
+}
