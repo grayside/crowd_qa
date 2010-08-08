@@ -224,6 +224,67 @@ function _crowd_qa_views_default_views() {
       ),
       'relationship' => 'none',
     ),
+    'edit_node' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'text' => '',
+      'exclude' => 0,
+      'id' => 'edit_node',
+      'table' => 'node',
+      'field' => 'edit_node',
+      'relationship' => 'none',
+    ),
+    'changed' => array(
+      'label' => 'Updated',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'date_format' => 'medium',
+      'custom_date_format' => '',
+      'exclude' => 0,
+      'id' => 'changed',
+      'table' => 'node',
+      'field' => 'changed',
+      'relationship' => 'none',
+    ),
   ));
   $handler->override_option('sorts', array(
     'created' => array(
@@ -930,6 +991,7 @@ Be the first to <?php print l(t(\'answer\'), \'node/add/crowd-qa-answer\', array
     'hide_empty' => 0,
   ));
   $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->override_option('items_per_page', 5);
   $handler->override_option('block_description', 'Crowd Q&A Hall of Fame');
   $handler->override_option('block_caching', -1);
   $translatables['crowd_qa_top_users'] = array(
