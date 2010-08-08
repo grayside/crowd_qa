@@ -14,14 +14,14 @@ function _crowd_qa_content_default_fields() {
       'weight' => '1',
       'parent' => '',
       'label' => array(
-        'format' => 'above',
+        'format' => 'inline',
       ),
       'teaser' => array(
         'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'hidden',
+        'format' => 'default',
         'exclude' => 0,
       ),
       '5' => array(
@@ -117,7 +117,18 @@ function _crowd_qa_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'userpoints--1' => array(
+          'module' => 'userpoints',
+          'delta' => -1,
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 0;
 
   $export['crowd_qa-feature-space'] = $context;
@@ -208,5 +219,19 @@ function _crowd_qa_strongarm() {
   $strongarm->value = 'group_post_standard';
 
   $export['og_content_type_usage_crowd_qa_question'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userpoints_votingapi_vote_karma_negative';
+  $strongarm->value = '-2';
+
+  $export['userpoints_votingapi_vote_karma_negative'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userpoints_votingapi_vote_karma_positive';
+  $strongarm->value = '10';
+
+  $export['userpoints_votingapi_vote_karma_positive'] = $strongarm;
   return $export;
 }
