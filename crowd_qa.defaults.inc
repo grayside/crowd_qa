@@ -126,8 +126,15 @@ function _crowd_qa_context_default_contexts() {
           'region' => 'right',
           'weight' => 0,
         ),
+        'views-crowd_qa_top_users-block_1' => array(
+          'module' => 'views',
+          'delta' => 'crowd_qa_top_users-block_1',
+          'region' => 'right',
+          'weight' => 1,
+        ),
       ),
     ),
+    'menu' => 'answers',
   );
   $context->condition_mode = 0;
 
@@ -219,6 +226,13 @@ function _crowd_qa_strongarm() {
   $strongarm->value = 'group_post_standard';
 
   $export['og_content_type_usage_crowd_qa_question'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userpoints_display_message';
+  $strongarm->value = '0';
+
+  $export['userpoints_display_message'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;

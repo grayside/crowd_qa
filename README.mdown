@@ -1,0 +1,3 @@
+# Crowd Q&A
+
+This feature provides Stackoverflow.com-style mechanim to crowdsource the answer to a question.
