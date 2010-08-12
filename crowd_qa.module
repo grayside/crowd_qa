@@ -40,31 +40,34 @@ function crowd_qa_nodeapi(&$node, $op, $a3, $a4) {
  */
 function crowd_qa_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'crowd_qa_answer_node_form') {
-    // Do not show the nodereference field if it is already set.
-    if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
-      // Hide the question reference widget for already set questions.
-      $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
-      $form['field_crowd_qa_question'][0]['#value'] = $form['field_crowd_qa_question'][0]['#default_value']['nid'];
-      $form['field_crowd_qa_question'][0]['#parents'] = array('field_crowd_qa_question', 0, 'nid');
+    // Hide the answer title, this is hard-coded in hook_nodeapi().
+    unset($form['title']);
 
-      // Hide the answer title, this is hard-coded.
-      unset($form['title']);
-
-      // Insert the question above the body area.
-      $question = node_load($form['field_crowd_qa_question'][0]['#default_value']['nid']);
-      $form['question'] = array(
-        '#value' => '<h2>Question: ' . l($question->title, 'node/' . $question->nid) . '</h2>',
-        '#weight' => -19,
-      );
-
-      // Forward the answer post back to the question page.
-      $form['#redirect'] = 'node/' . $question->nid;
-    }
+    // Forward the answer post back to the question page.
+    $form['#redirect'] = 'node/' . $question->nid;
 
     $form['preamble'] = array(
       '#value' => '<div class="info">' . t('Please answer properly or not at all.') . '</div>',
       '#weight' => -20,
     );
+
+    // Insert the question above the body area.
+    if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
+      $question = node_load($form['field_crowd_qa_question'][0]['#default_value']['nid']);
+      $form['question'] = array(
+        '#value' => '<h2>' . t('Question: ') . l($question->title, 'node/' . $question->nid) . '</h2>',
+        '#weight' => -19,
+      );
+    }
+    else {
+      $form['question'] = array(
+        '#value' => '<h2>' . t('Please select the question you will be answering.') . '</h2>',
+        '#weight' => -19,
+      );
+    }
+
+    // Do not show the nodereference field if it is already set.
+    $form['#after_build'][] = 'crowd_qa_form_answer_node_form_after_build';
   }
   elseif ($form_id == 'crowd_qa_question_node_form') {
     $form['preamble'] = array(
@@ -72,6 +75,20 @@ function crowd_qa_form_alter(&$form, &$form_state, $form_id) {
       '#weight' => -20,
     );
   }
+}
+
+/**
+ * Form crowd_qa_answer_node_form after build.
+ */
+function crowd_qa_form_answer_node_form_after_build($form, &$form_state) {
+  if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
+    // Hide the question reference widget for already set questions.
+    // Hidden is kind of a cheat, I would rather inject this in a validation callback.
+    $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
+    $form['field_crowd_qa_question'][0]['#value'] = $form['field_crowd_qa_question'][0]['#default_value']['nid'];
+    $form['field_crowd_qa_question'][0]['#parents'] = array('field_crowd_qa_question', 0, 'nid');
+  }
+  return $form;
 }
 
 /**
