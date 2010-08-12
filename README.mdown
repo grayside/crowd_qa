@@ -1,3 +1,7 @@
 # Crowd Q&A
 
 This feature provides Stackoverflow.com-style mechanim to crowdsource the answer to a question.
+
+## Todos
+
+Development issues for this project are currently being tracked [on github](http://github.com/grayside/crowd_qa/issues).
