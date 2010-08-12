@@ -6,7 +6,21 @@
  *   Module for Crowdsourced Question & Answer
  */
 
-require_once 'crowd_qa.features.inc';
+include_once 'crowd_qa.features.inc';
+
+/**
+ * Implementation of hook_init().
+ */
+function crowd_qa_init() {
+  // Redirect answer nodes to their question.
+  if (arg(0) == 'node' && is_numeric(arg(1)) && arg(2) == NULL) {
+    $node = node_load(arg(1));
+    if ($node->type == 'crowd_qa_answer') {
+      drupal_goto('node/'. $node->field_crowd_qa_question[0]['nid'], NULL, 'answer' . $node->nid);
+    }
+  }
+}
+
 
 /**
  * Implementation of hook_nodeapi().
@@ -78,7 +92,8 @@ function crowd_qa_preprocess_node_form(&$vars) {
  */
 function crowd_qa_system_info_alter(&$info, $row) {
   if (module_exists('atrium') && $row->name == 'crowd_qa') {
-    $info['spaces']['types'][] = 'og';
-//    $info['name'] = t('Question and Answers');
+    if (empty($info['spaces']['types']) || !in_array('og', $info['spaces']['types'])) {
+      $info['spaces']['types'][] = 'og';
+    }
   }
 }
