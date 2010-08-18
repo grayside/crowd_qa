@@ -1,55 +1,54 @@
 <?php
 
 /**
- * Implementation of hook_content_default_fields().
- */
-function crowd_qa_content_default_fields() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_content_default_fields', $args);
-}
-
-/**
- * Implementation of hook_context_default_contexts().
- */
-function crowd_qa_context_default_contexts() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_context_default_contexts', $args);
-}
-
-/**
  * Implementation of hook_ctools_plugin_api().
  */
 function crowd_qa_ctools_plugin_api() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_ctools_plugin_api', $args);
+  list($module, $api) = func_get_args();
+  if ($module == "context" && $api == "context") {
+    return array("version" => 3);
+  }
+  elseif ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**
  * Implementation of hook_node_info().
  */
 function crowd_qa_node_info() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.features.node');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_node_info', $args);
+  $items = array(
+    'crowd_qa_answer' => array(
+      'name' => t('Answer'),
+      'module' => 'features',
+      'description' => t('An <em>answer</em> is one potential answer to a question.'),
+      'has_title' => '1',
+      'title_label' => t('Answer'),
+      'has_body' => '1',
+      'body_label' => t('Body'),
+      'min_word_count' => '0',
+      'help' => '',
+    ),
+    'crowd_qa_question' => array(
+      'name' => t('Question'),
+      'module' => 'features',
+      'description' => t('The <em>question</em> type is used to crowdsource the solution or answer to a particular question.'),
+      'has_title' => '1',
+      'title_label' => t('Question'),
+      'has_body' => '1',
+      'body_label' => t('Body'),
+      'min_word_count' => '0',
+      'help' => t('The crowd prefers to see a detailed, well-researched question.'),
+    ),
+  );
+  return $items;
 }
 
 /**
- * Implementation of hook_strongarm().
+ * Implementation of hook_views_api().
  */
-function crowd_qa_strongarm() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_strongarm', $args);
-}
-
-/**
- * Implementation of hook_views_default_views().
- */
-function crowd_qa_views_default_views() {
-  module_load_include('inc', 'crowd_qa', 'crowd_qa.features.views');
-  $args = func_get_args();
-  return call_user_func_array('_crowd_qa_views_default_views', $args);
+function crowd_qa_views_api() {
+  return array(
+    'api' => '2',
+  );
 }
