@@ -107,9 +107,9 @@ function crowd_qa_form_answer_node_form_after_build($form, &$form_state) {
  * Provides Atrium-integration for Crowd QA
  */
 function crowd_qa_preprocess_node_form(&$vars) {
-  if (module_exists('atrium') && !empty($vars['form']['field_crowd_qa_question'])) {
-    $vars['sidebar']['field_crowd_qa_question'] = $vars['form']['field_crowd_qa_question'];
-    unset($vars['form']['field_crowd_qa_question']);
+  if (module_exists('atrium') && !empty($vars['form']['nodeformcols_region_main']['field_crowd_qa_question'])) {
+    $vars['form']['nodeformcols_region_right']['field_crowd_qa_question'] = $vars['form']['nodeformcols_region_main']['field_crowd_qa_question'];
+    unset($vars['form']['nodeformcols_region_main']['field_crowd_qa_question']);
   }
 }
 
