@@ -1,0 +1,9 @@
+/* $Id$ */
+
+.feature-crowd_qa {
+  background:url(images/HAL-9000-icon-20.png) no-repeat !important;
+}
+
+#features-menu li a.icon-answers span.icon {
+  background:url(images/HAL-9000-icon-40.png) no-repeat;
+}

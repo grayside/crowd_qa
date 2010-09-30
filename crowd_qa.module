@@ -27,6 +27,9 @@ function crowd_qa_menu() {
  * Implementation of hook_init().
  */
 function crowd_qa_init() {
+  if (module_exists('atrium')) {
+    drupal_add_css(drupal_get_path('module', 'crowd_qa') . '/crowd_qa.css');
+  }
   // Redirect answer nodes to their question.
   if (arg(0) == 'node' && is_numeric(arg(1)) && arg(2) == NULL) {
     $node = node_load(arg(1));
@@ -80,7 +83,7 @@ function crowd_qa_form_answer_node_form_after_build($form, &$form_state) {
   if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
     // Hide the question reference widget for already set questions.
     // Hidden is kind of a cheat, I would rather inject this in a validation callback.
-//    $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
+    $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
     $form['field_crowd_qa_question'][0]['#value'] = $form['field_crowd_qa_question'][0]['#default_value']['nid'];
     $form['field_crowd_qa_question'][0]['#parents'] = array('field_crowd_qa_question', 0, 'nid');
 
