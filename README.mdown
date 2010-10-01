@@ -1,6 +1,10 @@
 # Crowd Q&A
 
-This feature provides Stackoverflow.com-style mechanim to crowdsource the answer to a question.
+This feature mimics some of the functionality of Stackoverfow.com to crowd-source the answer to a question.
+
+This Feature is intended to provide the core Q&A interaction, display, and listing functionality seen in the 
+stack communication model. Some of these pieces are provided by sub-features to allow individual sites to deploy 
+minimal or alternative functionality.
 
 ## Todos
 
