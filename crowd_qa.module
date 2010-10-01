@@ -78,12 +78,14 @@ function crowd_qa_form_alter(&$form, &$form_state, $form_id) {
 
 /**
  * Form crowd_qa_answer_node_form after build.
+ * @todo resolve how to hide nodereference widget.
  */
 function crowd_qa_form_answer_node_form_after_build($form, &$form_state) {
   if (isset($form['field_crowd_qa_question'][0]['#default_value']['nid'])) {
     // Hide the question reference widget for already set questions.
     // Hidden is kind of a cheat, I would rather inject this in a validation callback.
-    $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
+    // Even worse, it looks like this will need to be done in CSS.
+//    $form['field_crowd_qa_question'][0]['#type'] = 'hidden';
     $form['field_crowd_qa_question'][0]['#value'] = $form['field_crowd_qa_question'][0]['#default_value']['nid'];
     $form['field_crowd_qa_question'][0]['#parents'] = array('field_crowd_qa_question', 0, 'nid');
 
@@ -99,7 +101,13 @@ function crowd_qa_form_answer_node_form_after_build($form, &$form_state) {
       '#weight' => -19,
     );
   }
+  array_unshift($form['#validate'], 'gray');
   return $form;
+}
+
+function gray($form, $form_state) {
+  dpm($form);
+  dpm($form_state['values']);
 }
 
 /**
